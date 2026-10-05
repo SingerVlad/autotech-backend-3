@@ -5,7 +5,7 @@ Backend desarrollado en **Django** desacoplado de almacenamiento local y conecta
 ---
 
 ## 1. Repositorio en GitHub
-- **URL:** [https://github.com/SingerVlad/autotech-backend](https://github.com/SingerVlad/autotech-backend)
+- **URL:** [https://github.com/SingerVlad/autotech-backend-3](https://github.com/SingerVlad/autotech-backend-3)
 - **Rama:** `main`
 - **Visibilidad:** Pública
 
@@ -17,8 +17,8 @@ Para clonar y poner en marcha el proyecto localmente desde cero:
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/SingerVlad/autotech-backend.git
-cd autotech-backend
+git clone https://github.com/SingerVlad/autotech-backend-3.git
+cd autotech-backend-3
 
 ```
 ---
