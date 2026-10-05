@@ -96,3 +96,40 @@ Servidor disponible en: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 1. Inicie sesión en https://console.neon.tech y acceda al proyecto autotech-db.
 2. En el menú lateral seleccione Tables (esquema public).
 3. En las tablas taller_ordentrabajo, taller_vehiculo y taller_marca se apreciarán los registros en tiempo real.
+
+## 🚀 API RESTful - Documentación y Arquitectura (Evaluación Unidad 3)
+
+### 1. Arquitectura y Mecanismo de Autenticación
+- **Framework:** Django REST Framework (DRF).
+- **Esquema de Autenticación:** Se implementó `TokenAuthentication` junto con `SessionAuthentication`.
+  - **Justificación Técnica:** La autenticación basada en Tokens (`rest_framework.authtoken`) desacopla el backend del cliente, permitiendo el consumo seguro de recursos por parte de aplicaciones móviles, SPAs (React, Vue) o microservicios externos mediante el encabezado HTTP estándar:
+    ```http
+    Authorization: Token <tu_token_aqui>
+    ```
+- **Control de Acceso y Permisos:** Se configuró la política global `IsAuthenticatedOrReadOnly`.
+  - **Consultas anónimas (`GET`):** Abiertas al público para consultar catálogo de servicios y fichas.
+  - **Mutaciones (`POST`, `PUT`, `PATCH`, `DELETE`):** Requieren obligatoriamente credenciales válidas o token activo, devolviendo `401 Unauthorized` o `403 Forbidden` en caso contrario.
+
+### 2. Catálogo de Endpoints RESTful
+
+| Recurso | Método HTTP | Endpoint | Descripción | Código Éxito |
+| :--- | :---: | :--- | :--- | :---: |
+| **Servicios** | `GET` | `/api/servicios/` | Listado completo de servicios | `200 OK` |
+| | `POST` | `/api/servicios/` | Registro de nuevo servicio técnico | `201 Created` |
+| | `GET` | `/api/servicios/<id>/` | Detalle específico de un servicio | `200 OK` |
+| | `PUT` / `PATCH` | `/api/servicios/<id>/` | Actualización total o parcial | `200 OK` |
+| | `DELETE` | `/api/servicios/<id>/` | Eliminación de servicio | `204 No Content` |
+| **Vehículos** | `GET` / `POST` | `/api/vehiculos/` | Listar y dar de alta vehículos | `200` / `201` |
+| | `GET` / `PUT` / `DELETE`| `/api/vehiculos/<id>/` | Operaciones puntuales por patente/ID | `200` / `204` |
+| **Órdenes de Trabajo**| `GET` / `POST` | `/api/ordenes/` | Listar y crear órdenes de trabajo | `200` / `201` |
+| | `GET` / `PUT` / `DELETE`| `/api/ordenes/<id>/` | Detalle, avance de estado y costos | `200` / `204` |
+| **Autenticación** | `POST` | `/api/api-token-auth/` | Obtención de Token con credenciales | `200 OK` |
+
+### 3. Códigos de Estado Implementados
+- `200 OK`: Peticiones de lectura y actualización exitosas.
+- `201 Created`: Creación exitosa de recursos vía `POST`.
+- `204 No Content`: Eliminación confirmada sin cuerpo de retorno (`DELETE`).
+- `400 Bad Request`: Error de validación en la estructura del JSON enviado.
+- `401 Unauthorized` / `403 Forbidden`: Acceso no autorizado o token ausente.
+- `404 Not Found`: Recurso no encontrado.
+
