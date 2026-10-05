@@ -39,11 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Aplicación local
-    'taller.apps.TallerConfig',
-    # Paquetes externos
+    
+    # Librerías de terceros existentes
     'crispy_forms',
     'crispy_bootstrap5',
+    
+    # Django REST Framework y Tokens (Nota 3)
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    # Tu aplicación
+    'taller',
 ]
 
 MIDDLEWARE = [
@@ -80,11 +86,10 @@ WSGI_APPLICATION = 'autotech_project.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://neondb_owner:npg_7EBlnkCIXp5u@ep-blue-glitter-b43171ca-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
@@ -135,3 +140,14 @@ MAILERS = {
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Configuración global de Django REST Framework (Criterio 3.1.2 y 3.1.3)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+}
